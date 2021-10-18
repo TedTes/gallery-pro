@@ -9,6 +9,7 @@ function App() {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(5000);
   const [_start, setStart] = useState(0);
+  const [toggle, setToggle] = useState({});
 
   useEffect(async () => {
     let data = await fetchData();
@@ -18,6 +19,7 @@ function App() {
   const handleClick = async (id) => {
     let val = localStorage.getItem(id) === "true" ? false : true;
     localStorage.setItem(id, val);
+    setToggle({ ...toggle, [id]: val });
   };
 
   async function fetchData() {
