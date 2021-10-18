@@ -24,6 +24,13 @@
   grid-gap: 1em;
   margin-top: 3.5em;
 }
+
+.selector {
+  width: 150px;
+  height: 27px;
+  border-radius: 9px;
+  padding: 0.3em;
+}
 @media only screen and (max-width: 550px) {
   .images-container {
     grid-template-columns: repeat(1, auto);
