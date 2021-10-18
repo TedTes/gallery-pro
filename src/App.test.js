@@ -35,7 +35,7 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 
-describe("to test clicking image or favorite icon", () => {
+describe("to test api call for rendering list of images ", () => {
   test("it should render list of images", async () => {
     const imageList = await waitFor(() => screen.getByTestId("image-list"));
     const imageItem = await waitFor(() => screen.findAllByTestId("image-item"));
@@ -43,12 +43,32 @@ describe("to test clicking image or favorite icon", () => {
     expect(imageList).toBeInTheDocument();
     expect(imageItem).toHaveLength(2);
   });
-
+});
+describe("to test clicking image or favorite icon events", () => {
   test("favorite icon should change to red  on clicking an image", async () => {
     const imageItem = await waitFor(() => screen.getByTestId(1));
     const svgIcon = await waitFor(() => screen.getByTestId("1s"));
     fireEvent.click(imageItem);
     expect(localStorage.getItem(1)).toBe("true");
     expect(svgIcon.getAttribute("fill")).toBe("red");
+  });
+  test("favorite icon should change from red to white  on clicking an image", async () => {
+    const imageItem = await waitFor(() => screen.getByTestId(1));
+    const svgIcon = await waitFor(() => screen.getByTestId("1s"));
+    fireEvent.click(imageItem);
+    expect(localStorage.getItem(1)).toBe("false");
+    expect(svgIcon.getAttribute("fill")).toBe("white");
+  });
+
+  test("favorite icon should change to red  on clicking favorite icon", async () => {
+    const svgIcon = await waitFor(() => screen.getByTestId("1s"));
+    fireEvent.click(svgIcon);
+    expect(svgIcon.getAttribute("fill")).toBe("red");
+  });
+
+  test("favorite icon should change from red to white on clicking favorite icon", async () => {
+    const svgIcon = await waitFor(() => screen.getByTestId("1s"));
+    fireEvent.click(svgIcon);
+    expect(svgIcon.getAttribute("fill")).toBe("white");
   });
 });

@@ -56,9 +56,12 @@ function App() {
     photos.find((item) => {
       if (res.includes(item.id.toString())) favoritePhotos.push(item);
     });
-    let start = _start;
+
     setTotal(favoritePhotos.length);
-    let data = favoritePhotos.slice(start, _limit);
+    let data = [];
+    if (favoritePhotos.length <= _limit) data = favoritePhotos;
+    else data = favoritePhotos.slice(_start, _limit);
+
     return { data };
   }
 
