@@ -10,11 +10,12 @@ function App() {
   const [total, setTotal] = useState(5000);
   const [_start, setStart] = useState(0);
   const [toggle, setToggle] = useState({});
+  const [favoritesView, setFavoritesView] = useState(false);
 
   useEffect(async () => {
     let data = await fetchData();
     setData(data);
-  }, []);
+  }, [favoritesView]);
 
   const handleClick = async (id) => {
     let val = localStorage.getItem(id) === "true" ? false : true;
@@ -22,11 +23,40 @@ function App() {
     setToggle({ ...toggle, [id]: val });
   };
 
+  const handleChange = async (e) => {
+    let option = e.target.value;
+    if (option === "Favorites") setFavoritesView(true);
+    else setFavoritesView(false);
+
+    fetchData();
+  };
+
   async function fetchData() {
     const url = `${BASE_URL}/photos?_start=${_start}&_limit=${_limit}`;
-    let res = await axios.get(url);
-    setTotal(5000);
+    let res = {};
+    await axios.get(url);
+    if (favoritesView) res = await fetchDataFavourite();
+    else {
+      res = await axios.get(url);
+      setTotal(5000);
+    }
     return res.data;
+  }
+
+  async function fetchDataFavourite() {
+    let result = await axios.get(`${BASE_URL}/photos`);
+    let photos = result.data;
+    let res = Object.keys(localStorage)
+      .filter((res) => localStorage[res] === "true")
+      .sort();
+    let favoritePhotos = [];
+    photos.find((item) => {
+      if (res.includes(item.id.toString())) favoritePhotos.push(item);
+    });
+    let start = _start;
+    setTotal(favoritePhotos.length);
+    let data = favoritePhotos.slice(start, _limit);
+    return { data };
   }
 
   return (
@@ -35,7 +65,11 @@ function App() {
         <div style={{ fontSize: "1.3em", fontWeight: "bold", opacity: ".9" }}>
           Gallery
         </div>
-        <select className="selector" data-testid="selector">
+        <select
+          className="selector"
+          data-testid="selector"
+          onChange={(e) => handleChange(e)}
+        >
           <option> All photos</option>
           <option> Favorites</option>
         </select>
