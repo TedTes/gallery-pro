@@ -16,7 +16,7 @@ function App() {
   useEffect(async () => {
     let data = await fetchData();
     setData(data);
-  }, [favoritesView]);
+  }, [_start, favoritesView, total]);
 
   const navigate = (val) => setStart(val);
 
@@ -37,7 +37,7 @@ function App() {
   async function fetchData() {
     const url = `${BASE_URL}/photos?_start=${_start}&_limit=${_limit}`;
     let res = {};
-    await axios.get(url);
+
     if (favoritesView) res = await fetchDataFavourite();
     else {
       res = await axios.get(url);

@@ -25,6 +25,14 @@
   margin-top: 3.5em;
 }
 
+.pagination-btn {
+  display: flex;
+  position: fixed;
+  bottom: 1em;
+  height: 30px;
+  align-items: center;
+}
+
 .selector {
   width: 150px;
   height: 27px;
