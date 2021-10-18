@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Pagination from "./Pagination";
 
 const BASE_URL = `https://jsonplaceholder.typicode.com`;
 
@@ -16,6 +17,8 @@ function App() {
     let data = await fetchData();
     setData(data);
   }, [favoritesView]);
+
+  const navigate = (val) => setStart(val);
 
   const handleClick = async (id) => {
     let val = localStorage.getItem(id) === "true" ? false : true;
@@ -114,6 +117,15 @@ function App() {
           <h4 id="loading">Loading...</h4>
         )}
       </div>
+      {total > 8 ? (
+        <Pagination
+          currentPage={_start}
+          navigate={navigate}
+          pageCount={Math.ceil(total / _limit)}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
