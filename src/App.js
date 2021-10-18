@@ -116,6 +116,8 @@ function App() {
               </svg>
             </div>
           ))
+        ) : favoritesView ? (
+          <h4 id="loading">No Favorite Items Found</h4>
         ) : (
           <h4 id="loading">Loading...</h4>
         )}
